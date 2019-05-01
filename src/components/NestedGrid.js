@@ -16,18 +16,35 @@ const styles = theme => ({
   },
 });
 
+const formatPrice = (x, currency) => {
+  switch (currency) {
+    case 'BRL':
+      return x.toFixed(2).replace('.', ',');
+    default:
+      return x.toFixed(2);
+  }
+};
+
+
 function FormRow(props) {
   const { classes, products } = props;
+
+
   const productRow = products.map(product => {
     console.log(product);
     return (
-      <Grid key={product.title} item xs={3}>
+      <Grid key={product.title} item xs="auto">
         <Paper className={classes.paper}>
           <div>
+            <div className="shelf-item">
+              <img src={`/products/${product.sku}_1.jpg`} alt={product.title} title={product.title} />
+            </div>
             <p><b>{product.title}</b></p>
-            <p>{product.style}</p>
             <p>{product.description}</p>
-            <p>{product.currencyFormat}{product.price} {product.currencyId}</p>
+            <div className="val">
+              {product.currencyFormat}
+              <b>{product.price}</b>
+            </div>
           </div>
         </Paper>
       </Grid>
@@ -63,22 +80,40 @@ function NestedGrid(props) {
   const { classes, products } = props;
 
   // Make this cleaner later yeet
-  const productList = tuplize(products, 4);
+  const productList = tuplize(products, 3);
 
   const productRows = productList.map(tuple => {
     return (
-      <Grid key={tuple[0].sku} container item xs={12} spacing={40}>
+      <Grid key={tuple[0].sku} container item spacing={16}>
         <FormRow classes={classes} products={tuple} />
       </Grid>
     )
   });
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={32}>
-        {productRows}
+    <Grid container className={classes.root}>
+      <Grid item xs={2}>
+        <Grid container className="sizes" justify="center">
+        <Grid container spacing={24}>
+          <h1>Sizes:</h1>
+        </Grid>
+        <Grid container spacing={24}>
+          {["S", "M", "L", "XL"].map(size => (
+            <Grid key={size} item>
+              <Paper className={classes.paper} style={{height: "25%", "padding-top": 0}}>
+              <h4>{size}</h4>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+        </Grid>
       </Grid>
-    </div>
+      <Grid item xs={10}>
+        <Grid container spacing={16}>
+          {productRows}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 
