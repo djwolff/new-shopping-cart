@@ -53,6 +53,12 @@ const cartText = {
   color: "white"
 }
 
+const totalText = {
+  color: "white",
+  postion: "fixed",
+  bottom: 0
+}
+
 function Cart(props) {
   const { classes, products, cartItems, removeCartItems } = props;
 
@@ -63,6 +69,7 @@ function Cart(props) {
   }
 
   var itemMap = []; // [{sku: {sku}, name: {name}, price: {price}, quantity: {quantity}}]
+  var total = 0;
 
   cartItems.forEach((item) => {
     var index = itemMap.findIndex(x => x.sku === item.sku)
@@ -71,6 +78,7 @@ function Cart(props) {
     } else {
       itemMap.push({sku: item.sku, name: item.title, price: item.price, quantity: 1});
     }
+    total += item.price
   })
 
   return (
@@ -86,7 +94,7 @@ function Cart(props) {
                 {itemMap.map((item) => {
                   return  <div style={{color: "white", margin: 10}}>
                             <div>
-                              <span>{item.name}</span>
+                              <span>{item.name} ($<b>{item.price}</b>)</span>
                               <span style={{float: "right"}}>{item.quantity}</span>
                             </div>
                             <button onClick={() => removeCartItems(item)}>Remove</button>
@@ -98,6 +106,9 @@ function Cart(props) {
                     :)
                   </p>
                 )}
+                <div style={totalText}>
+                  Total: {total}
+                </div>
               </div>
             </div>
           </div>
