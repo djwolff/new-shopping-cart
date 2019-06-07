@@ -1,0 +1,44 @@
+.float-cart {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: 450px;
+  height: 100%;
+  background-color: #1b1a20;
+  box-sizing: border-box;
+
+  transition: right 0.2s;
+}
+
+.bag {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 15px;
+  background-image: url('https://rawcdn.githack.com/jeffersonRibeiro/react-shopping-cart/ccf64841ddfdfedfce9821b2b7ff2c8075afb17c/src/static/bag-icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+
+/* MAC scrollbar para desktop*/
+@media screen and (min-width: 640px) {
+  .float-cart__content::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+  .float-cart__content::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #0c0b10;
+  }
+}
+
+.float-cart__content {
+  height: 100%;
+  overflow-y: scroll;
+}
