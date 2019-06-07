@@ -17,7 +17,7 @@ const styles = theme => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 400,
-    width: 225,
+    width: 200,
   },
 });
 
@@ -93,16 +93,17 @@ function NestedGrid(props) {
 
   function handleAddCartItem(item) {
     setCartItems(cartItems.concat(item))
-    console.log(cartItems);
   }
 
-  function handleRemoveCartItem(id) {
-    const index = cartItems.findIndex(obj => obj.sku = id);
+  function handleRemoveCartItem(item) {
+    console.log("deleting one ", item.name);
+    const index = cartItems.findIndex(x => x.sku === item.sku);
+    console.log(index);
     const newCart = [
       ...cartItems.slice(0, index),
       ...cartItems.slice(index+1)
     ]
-    setCartItems(newCart)
+    setCartItems(newCart);
   }
 
   // Make this cleaner later yeet
