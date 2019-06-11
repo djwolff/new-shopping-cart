@@ -60,9 +60,7 @@ const totalText = {
 }
 
 function Cart(props) {
-  const { classes, products, cartItems, removeCartItems } = props;
-
-  const [cartStatus, setCartStatus] = useState(false);
+  const { classes, products, cartItems, removeCartItems, cartStatus, setCartStatus } = props;
 
   function handleCartClick() {
     setCartStatus(!cartStatus);

@@ -90,9 +90,12 @@ function NestedGrid(props) {
   const { classes, products } = props;
 
   const [cartItems, setCartItems] = useState([]);
+  const [cartStatus, setCartStatus] = useState(false);
 
   function handleAddCartItem(item) {
-    setCartItems(cartItems.concat(item))
+    console.log("OPEN CART");
+    setCartItems(cartItems.concat(item));
+    setCartStatus(true);
   }
 
   function handleRemoveCartItem(item) {
@@ -112,7 +115,7 @@ function NestedGrid(props) {
   const productRows = productList.map(tuple => {
     return (
       <Grid key={tuple[0].sku} container item spacing={16}>
-        <FormRow classes={classes} products={tuple} addToCart={handleAddCartItem}/>
+        <FormRow classes={classes} products={tuple} addToCart={handleAddCartItem} />
       </Grid>
     )
   });
@@ -130,7 +133,7 @@ function NestedGrid(props) {
           </Grid>
         </Grid>
       </Grid>
-      <Cart cartItems={cartItems} removeCartItems={handleRemoveCartItem}/>
+      <Cart cartItems={cartItems} removeCartItems={handleRemoveCartItem} cartStatus={cartStatus} setCartStatus={setCartStatus}/>
     </div>
   );
 }
