@@ -16,8 +16,8 @@ const styles = theme => ({
     padding: theme.spacing.unit,
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    height: 400,
-    width: 200,
+    height: 360,
+    width: 220,
   },
 });
 
@@ -47,13 +47,22 @@ function FormRow(props) {
           <div>
             <img style={img} src={`/products/${product.sku}_1.jpg`} alt={product.title} title={product.title} />
             <p><b>{product.title}</b></p>
-            <p>{product.description}</p>
+            {/*}<p>{product.description}</p>*/}
             <div className="val">
               {product.currencyFormat}
               <b>{product.price}</b>
             </div>
-            <button onClick={() => addToCart(product)}>
-              Add to Cart
+            <button style={{margin: 2}} onClick={() => addToCart(product, "S")}>
+              (S)
+            </button>
+            <button style={{margin: 2}} onClick={() => addToCart(product, "M")}>
+              (M)
+            </button>
+            <button style={{margin: 2}} onClick={() => addToCart(product, "L")}>
+              (L)
+            </button>
+            <button style={{margin: 2}} onClick={() => addToCart(product, "XL")}>
+              (XL)
             </button>
           </div>
         </Paper>
@@ -92,21 +101,39 @@ function NestedGrid(props) {
   const [cartItems, setCartItems] = useState([]);
   const [cartStatus, setCartStatus] = useState(false);
 
-  function handleAddCartItem(item) {
-    console.log("OPEN CART");
-    setCartItems(cartItems.concat(item));
+  function handleAddCartItem(newItem, size) {
+    console.log("ADDING ITEM");
+    var index = cartItems.findIndex(x => (x.sku === newItem.sku && x.size === size));
+
+    var newCart = JSON.parse(JSON.stringify(cartItems));
+    if(index >= 0) {
+      newCart[index].quantity += 1;
+    } else {
+      newCart.push({sku: newItem.sku, name: newItem.title, price: newItem.price, quantity: 1, size: size});
+    }
+
     setCartStatus(true);
+    setCartItems(newCart);
   }
 
   function handleRemoveCartItem(item) {
-    console.log("deleting one ", item.name);
-    const index = cartItems.findIndex(x => x.sku === item.sku);
-    console.log(index);
-    const newCart = [
-      ...cartItems.slice(0, index),
-      ...cartItems.slice(index+1)
-    ]
-    setCartItems(newCart);
+    console.log("deleting one ", item.name, " size: ", item.size);
+    const index = cartItems.findIndex(x => (x.sku === item.sku && x.size === item.size));
+    if(index >= 0){
+
+      var newCart = JSON.parse(JSON.stringify(cartItems));
+      if(newCart[index].quantity === 1) {
+        newCart = [
+          ...cartItems.slice(0, index),
+          ...cartItems.slice(index+1)
+        ]
+      } else {
+        newCart[index].quantity -= 1;
+      }
+      setCartItems(newCart);
+    } else {
+      console.log("CANT REMOVE ITEM");
+    }
   }
 
   // Make this cleaner later yeet
@@ -124,9 +151,9 @@ function NestedGrid(props) {
   return (
     <div className="App">
       <Grid container className={classes.root}>
-        <Grid item xs={2}>
-          <Size />
-        </Grid>
+        {/*<Grid item xs={2}>
+          <Size editSize={editSize} clothSize={size}/>
+        </Grid>*/}
         <Grid item xs={10}>
           <Grid container spacing={8}>
             {productRows}

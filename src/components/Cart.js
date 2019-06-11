@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-
 import './cartStyle.scss';
 
-const styles = theme => ({
-  paper: {
-    padding: theme.spacing.unit,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-});
 
 const root = {
   position: "absolute",
@@ -66,18 +55,13 @@ function Cart(props) {
     setCartStatus(!cartStatus);
   }
 
-  var itemMap = []; // [{sku: {sku}, name: {name}, price: {price}, quantity: {quantity}}]
   var total = 0;
 
   cartItems.forEach((item) => {
-    var index = itemMap.findIndex(x => x.sku === item.sku)
-    if(index >= 0) {
-      itemMap[index].quantity += 1;
-    } else {
-      itemMap.push({sku: item.sku, name: item.title, price: item.price, quantity: 1});
-    }
-    total += item.price
+    total += item.price * item.quantity;
   })
+
+  // console.log("cartitems", cartItems);
 
   return (
     <div style={root}>
@@ -89,10 +73,10 @@ function Cart(props) {
                 <p style={cartText}>{cartItems.length} Item(s) in Cart</p>
               </div>
               <div className="float-cart__shelf-container">
-                {itemMap.map((item) => {
+                {cartItems.map((item) => {
                   return  <div style={{color: "white", margin: 10}}>
                             <div>
-                              <span>{item.name} ($<b>{item.price}</b>)</span>
+                              <span>({item.size}) {item.name} (${item.price})</span>
                               <span style={{float: "right"}}>{item.quantity}</span>
                             </div>
                             <button onClick={() => removeCartItems(item)}>Remove</button>

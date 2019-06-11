@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 function Size(props) {
-  const { classes, products } = props;
+  const { classes, products, clothSize, editSize } = props;
 
   return (
     <Grid container className="sizes" justify="center">
@@ -27,9 +27,15 @@ function Size(props) {
       <Grid container spacing={24}>
         {["S", "M", "L", "XL"].map(size => (
           <Grid key={size} item>
-            <Paper className={classes.paper} style={{height: "25%", "padding-top": 0}}>
-            <h4>{size}</h4>
-            </Paper>
+            {clothSize === size ? (
+              <Paper className={classes.paper} style={{height: "25%", "padding-top": 0, "backgroundColor": "green", "cursor": "pointer"}}  onClick={() => editSize(size)}>
+                <h4>{size}</h4>
+              </Paper>
+            ) : (
+              <Paper className={classes.paper} style={{height: "25%", "padding-top": 0, "cursor": "pointer"}}  onClick={() => editSize(size)}>
+                <h4>{size}</h4>
+              </Paper>
+            )}
           </Grid>
         ))}
       </Grid>
